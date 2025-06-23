@@ -9,34 +9,36 @@ interface Message {
     sender: 'user' | 'bot';
     text: string;
 }
-const ChatWindow = () => {
+interface Props {
+    chatId: string;
+}
+const ChatWindow = ({chatId}:Props) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const messagesRef = ref(db, "chats/default");
-        onValue(messagesRef, (snapshot) => {
+        const messagesRef = ref(db, `chats/${chatId}`);
+        const unsubscribe = onValue(messagesRef, (snapshot) => {
             const data = snapshot.val();
-            if (data) {
-                const loadedMessages = Object.values(data) as Message[];
-                setMessages(loadedMessages);
-            }
+            const loadedMessages = data ? Object.values(data) as Message[] : [];
+            setMessages(loadedMessages);
         });
-    }, []);
+
+        return () => unsubscribe(); // clean up listener on unmount/change
+    }, [chatId]);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
     const handleSend = async () => {
         if (!input.trim()) return;
 
         const userMessage: Message = { sender: 'user', text: input };
-        setMessages(prev => [...prev, userMessage]);
-        setInput('');
-
         const botReplyText = await generateReply(input);
         const botMessage: Message = { sender: 'bot', text: botReplyText };
-        setMessages(prev => [...prev, botMessage]);
-
-        const messagesRef = ref(db, "chats/default");
+        const messagesRef = ref(db, `chats/${chatId}`);
         push(messagesRef, userMessage);
         push(messagesRef, botMessage);
     };
