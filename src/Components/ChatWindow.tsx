@@ -1,7 +1,31 @@
+import { useState } from 'react';
+
+interface Message {
+    sender: 'user' | 'bot';
+    text: string;
+}
 const ChatWindow = () => {
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [input, setInput] = useState('');
+
+    const handleSend = async () => {
+
+    };
+
     return (
         <div className="chat-container">
-          Role based Chatbot
+            <div className="messages">
+
+            </div>
+
+            <div className="input-area">
+                <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Type your message..."
+                />
+                <button onClick={handleSend}>Send</button>
+            </div>
         </div>
     );
 };
