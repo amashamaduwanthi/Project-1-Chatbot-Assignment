@@ -1,7 +1,10 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import '../Components/ChatWindow.css';
 import '../services/LLMService.ts'
 import {generateReply} from "../services/LLMService.ts";
+import { ref, push, onValue } from "firebase/database";
+import { db } from "../Firebase.ts";
+
 interface Message {
     sender: 'user' | 'bot';
     text: string;
@@ -11,6 +14,16 @@ const ChatWindow = () => {
     const [input, setInput] = useState('');
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+    useEffect(() => {
+        const messagesRef = ref(db, "chats/default");
+        onValue(messagesRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const loadedMessages = Object.values(data) as Message[];
+                setMessages(loadedMessages);
+            }
+        });
+    }, []);
 
     const handleSend = async () => {
         if (!input.trim()) return;
@@ -22,6 +35,10 @@ const ChatWindow = () => {
         const botReplyText = await generateReply(input);
         const botMessage: Message = { sender: 'bot', text: botReplyText };
         setMessages(prev => [...prev, botMessage]);
+
+        const messagesRef = ref(db, "chats/default");
+        push(messagesRef, userMessage);
+        push(messagesRef, botMessage);
     };
 
     return (

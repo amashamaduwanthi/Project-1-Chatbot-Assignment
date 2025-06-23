@@ -10,7 +10,8 @@ export const generateReply = async (userMessage: string): Promise<string> => {
             {
                 contents: [
                     {
-                        parts: [{ text: userMessage }],
+                        parts: [{ text: userMessage
+                        }],
                     },
                 ],
             },
