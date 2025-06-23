@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import '../Components/ChatWindow.css';
 interface Message {
     sender: 'user' | 'bot';
     text: string;
