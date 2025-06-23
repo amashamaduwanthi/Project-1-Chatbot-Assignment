@@ -1,5 +1,7 @@
 import {useRef, useState} from 'react';
 import '../Components/ChatWindow.css';
+import '../services/LLMService.ts'
+import {generateReply} from "../services/LLMService.ts";
 interface Message {
     sender: 'user' | 'bot';
     text: string;
