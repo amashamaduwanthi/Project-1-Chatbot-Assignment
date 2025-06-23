@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useRef, useState} from 'react';
 import '../Components/ChatWindow.css';
 interface Message {
     sender: 'user' | 'bot';
@@ -7,6 +7,8 @@ interface Message {
 const ChatWindow = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
 
     const handleSend = async () => {
         if (!input.trim()) return;
@@ -14,6 +16,10 @@ const ChatWindow = () => {
         const userMessage: Message = { sender: 'user', text: input };
         setMessages(prev => [...prev, userMessage]);
         setInput('');
+
+        const botReplyText = await generateReply(input);
+        const botMessage: Message = { sender: 'bot', text: botReplyText };
+        setMessages(prev => [...prev, botMessage]);
     };
 
     return (
@@ -24,6 +30,8 @@ const ChatWindow = () => {
                         {msg.text}
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
+
             </div>
 
             <div className="input-area">
