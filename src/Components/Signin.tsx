@@ -1,13 +1,28 @@
 import { useState } from "react";
 import "./signin.css";
-
-const Signin = () => {
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { ref, get } from "firebase/database";
+import { auth, db } from "../Firebase";
+const Signin = ({ onLogin }: { onLogin: (uid: string, role: string) => void }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSignin = async (e: React.FormEvent) => {
         e.preventDefault();
+        try {
+            const userCred = await signInWithEmailAndPassword(auth, email, password);
+            const uid = userCred.user.uid;
 
+            const snapshot = await get(ref(db, `users/${uid}`));
+            if (snapshot.exists()) {
+                const role = snapshot.val().role;
+                onLogin(uid, role);
+            } else {
+                alert("No role found for user.");
+            }
+        } catch (err: any) {
+            alert(err.message);
+        }
     };
 
     return (
