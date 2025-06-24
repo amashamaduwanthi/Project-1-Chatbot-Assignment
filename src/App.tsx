@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ChatWindow from './Components/ChatWindow';
 import Signup from './Components/Signup';
+import Login from './Components/Signin.tsx'
 import './App.css';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
                     <>
 
                         <p>
+                            <Login onLogin={setUserId} />
                             Don't have an account?{' '}
                             <button onClick={() => setShowSignup(true)}>Sign up</button>
                         </p>
