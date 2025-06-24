@@ -1,3 +1,4 @@
+import '../Components/Sidebar.css'
 const Sidebar = ({ onSelectChat }) => {
     const chats = [
         { id: 'default', title: 'New Chat' },
