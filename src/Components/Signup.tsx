@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ref, set } from "firebase/database";
+import { auth, db } from "../Firebase";
 import './signup.css'
 const Signup = () => {
     const [email, setEmail] = useState("");
@@ -7,6 +10,19 @@ const Signup = () => {
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
+        try {
+            const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            const uid = userCred.user.uid;
+
+            await set(ref(db, `users/${uid}`), {
+                email,
+                role,
+            });
+
+            alert("Signup successful");
+        } catch (err: any) {
+            alert(err.message);
+        }
     };
     return (
         <form onSubmit={handleSignup} className="signup-form">

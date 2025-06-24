@@ -11,23 +11,22 @@ const App = () => {
 
     if (!userId) {
         return (
-            <div>
+            <div className="auth-wrapper">
                 {showSignup ? (
                     <>
                         <Signup onSignup={setUserId} />
-                        <p>
-                            Already have an account?{' '}
+                        <div className="switch-auth">
+                            <span>Already have an account? </span>
                             <button onClick={() => setShowSignup(false)}>Login</button>
-                        </p>
+                        </div>
                     </>
                 ) : (
                     <>
-
-                        <p>
-                            <Login onLogin={setUserId} />
-                            Don't have an account?{' '}
+                        <Login onLogin={setUserId} />
+                        <div className="switch-auth">
+                            <span>Don't have an account? </span>
                             <button onClick={() => setShowSignup(true)}>Sign up</button>
-                        </p>
+                        </div>
                     </>
                 )}
             </div>
