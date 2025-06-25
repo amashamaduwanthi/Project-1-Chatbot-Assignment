@@ -5,6 +5,8 @@ import {generateReply} from "../services/LLMService.ts";
 import { ref, push, onValue } from "firebase/database";
 import { db } from "../Firebase.ts";
 import {getPromptByRole} from "../utils/getPromptByRole.ts";
+import { MdPerson } from 'react-icons/md';
+import { FaRobot } from 'react-icons/fa';
 
 interface Message {
     sender: 'user' | 'bot';
@@ -56,9 +58,17 @@ const ChatWindow = ({chatId,userRole}:Props) => {
             <div className="messages">
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`message ${msg.sender}`}>
-                        {msg.text}
+                        <div className="avatar">
+                            {msg.sender === 'user' ? <MdPerson /> : <FaRobot />}
+                        </div>
+                        <div className="message-content">
+                            <div className="bubble">{msg.text}</div>
+                        </div>
+
                     </div>
                 ))}
+
+
                 <div ref={messagesEndRef} />
 
             </div>

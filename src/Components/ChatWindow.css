@@ -27,30 +27,64 @@
 }
 
 .message {
-    max-width: 75%;
-    padding: 14px 20px;
-    border-radius: 16px;
-    font-size: 16px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 80%;
     animation: fadeIn 0.3s ease;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .message.user {
-    background-color: #007aff;
-    color: white;
     align-self: flex-end;
-    border-bottom-right-radius: 4px;
+    flex-direction: row-reverse;
 }
 
 .message.bot {
-    background-color: #f1f1f1;
-    color: #222;
     align-self: flex-start;
-    border-bottom-left-radius: 4px;
 }
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.bubble {
+    background-color: #f0f0f0;
+    padding: 14px 20px;
+    border-radius: 20px;
+    font-size: 15px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    max-width: 100%;
+}
+
+.user .bubble {
+    background-color: #d1eaff;
+    color: #000;
+    border-top-right-radius: 0;
+}
+
+.bot .bubble {
+    background-color: #f0dfff;
+    color: #000;
+    border-top-left-radius: 0;
+}
+
 
 .input-area {
     display: flex;
