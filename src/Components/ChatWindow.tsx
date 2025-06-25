@@ -4,6 +4,7 @@ import '../services/LLMService.ts'
 import {generateReply} from "../services/LLMService.ts";
 import { ref, push, onValue } from "firebase/database";
 import { db } from "../Firebase.ts";
+import {getPromptByRole} from "../utils/getPromptByRole.ts";
 
 interface Message {
     sender: 'user' | 'bot';
@@ -11,8 +12,9 @@ interface Message {
 }
 interface Props {
     chatId: string;
+    userRole: string;
 }
-const ChatWindow = ({chatId}:Props) => {
+const ChatWindow = ({chatId,userRole}:Props) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -25,7 +27,7 @@ const ChatWindow = ({chatId}:Props) => {
             setMessages(loadedMessages);
         });
 
-        return () => unsubscribe(); // clean up listener on unmount/change
+        return () => unsubscribe();
     }, [chatId]);
 
     useEffect(() => {
@@ -36,11 +38,17 @@ const ChatWindow = ({chatId}:Props) => {
         if (!input.trim()) return;
 
         const userMessage: Message = { sender: 'user', text: input };
-        const botReplyText = await generateReply(input);
+
+        //  Generate role-specific prompt
+        const rolePrompt = getPromptByRole(userRole, input);
+        //  Send rolePrompt to Gemini API
+        const botReplyText = await generateReply(rolePrompt);
         const botMessage: Message = { sender: 'bot', text: botReplyText };
         const messagesRef = ref(db, `chats/${chatId}`);
         push(messagesRef, userMessage);
         push(messagesRef, botMessage);
+
+        setInput('')
     };
 
     return (
