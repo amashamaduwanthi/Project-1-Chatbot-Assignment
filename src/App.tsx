@@ -9,10 +9,11 @@ import { ref, get } from 'firebase/database';
 const App = () => {
     const [userId, setUserId] = useState<string | null>(null);
     const [userRole, setUserRole] = useState<string>('guest');
+    const [userName, setUserName] = useState<string>('User');
     const [showSignup, setShowSignup] = useState(false);
     const [selectedChat, setSelectedChat] = useState('default');
 
-    const handleUserLogin = async (uid: string) => {
+    const handleUserLogin = async (uid: string, role?: string, name?: string) => {
         setUserId(uid);
 
         try {
@@ -20,6 +21,7 @@ const App = () => {
             const data = snapshot.val();
             if (data?.role) {
                 setUserRole(data.role);
+                setUserName(data.name || 'User');
                 setSelectedChat(data.role); //  set initial chat to role
             } else {
                 setUserRole('guest');
@@ -35,7 +37,7 @@ const App = () => {
             <div className="auth-wrapper">
                 {showSignup ? (
                     <>
-                        <Signup onSignup={handleUserLogin} />
+                        <Signup onSignup={(uid) => handleUserLogin(uid)} />
                         <div className="switch-auth">
                             <span>Already have an account? </span>
                             <button onClick={() => setShowSignup(false)}>Login</button>
@@ -43,7 +45,7 @@ const App = () => {
                     </>
                 ) : (
                     <>
-                        <Login onLogin={handleUserLogin} />
+                        <Login onLogin={(uid, role, name) => handleUserLogin(uid, role, name)} />
                         <div className="switch-auth">
                             <span>Don't have an account? </span>
                             <button onClick={() => setShowSignup(true)}>Sign up</button>
@@ -72,7 +74,14 @@ const App = () => {
             </aside>
 
             <main className="chat-panel">
-                <ChatWindow chatId={selectedChat} userRole={userRole} />
+                <div className="chat-header">
+                    <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+                    <div className="user-info">
+                        <h3>{userName}</h3>
+                        <p>{userRole}</p>
+                    </div>
+                </div>
+                <ChatWindow chatId={selectedChat} userRole={userRole} userName={userName} />
             </main>
         </div>
     );

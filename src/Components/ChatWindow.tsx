@@ -16,6 +16,7 @@ interface Message {
 interface Props {
     chatId: string;
     userRole: string;
+    userName: string;
 }
 const ChatWindow = ({chatId,userRole}:Props) => {
     const [messages, setMessages] = useState<Message[]>([]);

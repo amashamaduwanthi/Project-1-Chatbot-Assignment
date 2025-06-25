@@ -3,7 +3,7 @@ import "./signin.css";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ref, get } from "firebase/database";
 import { auth, db } from "../Firebase";
-const Signin = ({ onLogin }: { onLogin: (uid: string, role: string) => void }) => {
+const Signin = ({ onLogin }: { onLogin: (uid: string, role: string,name:string) => void }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -15,8 +15,10 @@ const Signin = ({ onLogin }: { onLogin: (uid: string, role: string) => void }) =
 
             const snapshot = await get(ref(db, `users/${uid}`));
             if (snapshot.exists()) {
-                const role = snapshot.val().role;
-                onLogin(uid, role);
+                const userData = snapshot.val();
+                const role = userData.role;
+                const name = userData.name || "User";
+                onLogin(uid, role,name);
             } else {
                 alert("No role found for user.");
             }
