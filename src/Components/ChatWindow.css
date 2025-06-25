@@ -84,6 +84,13 @@
     color: #000;
     border-top-left-radius: 0;
 }
+.timestamp {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+    text-align: right;
+}
+
 
 
 .input-area {

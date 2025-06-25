@@ -11,6 +11,7 @@ import { FaRobot } from 'react-icons/fa';
 interface Message {
     sender: 'user' | 'bot';
     text: string;
+    timestamp?: number;
 }
 interface Props {
     chatId: string;
@@ -38,14 +39,14 @@ const ChatWindow = ({chatId,userRole}:Props) => {
 
     const handleSend = async () => {
         if (!input.trim()) return;
-
-        const userMessage: Message = { sender: 'user', text: input };
+        const timestamp = Date.now();
+        const userMessage: Message = { sender: 'user', text: input,timestamp };
 
         //  Generate role-specific prompt
         const rolePrompt = getPromptByRole(userRole, input);
         //  Send rolePrompt to Gemini API
         const botReplyText = await generateReply(rolePrompt);
-        const botMessage: Message = { sender: 'bot', text: botReplyText };
+        const botMessage: Message = { sender: 'bot', text: botReplyText,timestamp: Date.now() };
         const messagesRef = ref(db, `chats/${chatId}`);
         push(messagesRef, userMessage);
         push(messagesRef, botMessage);
@@ -63,6 +64,11 @@ const ChatWindow = ({chatId,userRole}:Props) => {
                         </div>
                         <div className="message-content">
                             <div className="bubble">{msg.text}</div>
+                            {msg.timestamp && (
+                                <div className="timestamp">
+                                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                            )}
                         </div>
 
                     </div>
