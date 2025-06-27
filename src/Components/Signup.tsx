@@ -45,7 +45,13 @@ const Signup = () => {
                 <option value="counselor">Counselor</option>
                 <option value="teacher">Teacher</option>
                 <option value="friend">Friend</option>
+                <option value="student">Student</option>
+                <option value="developer">Developer</option>
+                <option value="designer">Designer</option>
+                <option value="doctor">Doctor</option>
                 <option value="default">Default</option>
+
+
             </select>
             <button type="submit">Sign Up</button>
         </form>

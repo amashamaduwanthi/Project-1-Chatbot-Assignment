@@ -87,18 +87,33 @@ const App = () => {
                 </div>
 
                 <ul className="chat-list">
-                    <li className={selectedChat === 'default' ? 'active' : ''} onClick={() => setSelectedChat('default')}>
-                        Default
-                    </li>
-                    <li className={selectedChat === 'counselor' ? 'active' : ''} onClick={() => setSelectedChat('counselor')}>
-                        Counseling
-                    </li>
-                    <li className={selectedChat === 'friend' ? 'active' : ''} onClick={() => setSelectedChat('friend')}>
-                        Friend
-                    </li>
-                    <li className={selectedChat === 'teacher' ? 'active' : ''} onClick={() => setSelectedChat('teacher')}>
-                        Teacher
-                    </li>
+                    <ul>
+                        <li className={selectedChat === 'counselor' ? 'active' : ''} onClick={() => setSelectedChat('counselor')}>
+                            Counselor
+                        </li>
+                        <li className={selectedChat === 'teacher' ? 'active' : ''} onClick={() => setSelectedChat('teacher')}>
+                            Teacher
+                        </li>
+                        <li className={selectedChat === 'friend' ? 'active' : ''} onClick={() => setSelectedChat('friend')}>
+                            Friend
+                        </li>
+                        <li className={selectedChat === 'student' ? 'active' : ''} onClick={() => setSelectedChat('student')}>
+                            Student
+                        </li>
+                        <li className={selectedChat === 'developer' ? 'active' : ''} onClick={() => setSelectedChat('developer')}>
+                            Developer
+                        </li>
+                        <li className={selectedChat === 'designer' ? 'active' : ''} onClick={() => setSelectedChat('designer')}>
+                            Designer
+                        </li>
+                        <li className={selectedChat === 'doctor' ? 'active' : ''} onClick={() => setSelectedChat('doctor')}>
+                            Doctor
+                        </li>
+                        <li className={selectedChat === 'default' ? 'active' : ''} onClick={() => setSelectedChat('default')}>
+                            Default
+                        </li>
+                    </ul>
+
                 </ul>
             </aside>
 
