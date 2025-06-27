@@ -24,7 +24,8 @@ const ChatWindow = ({chatId,userRole}:Props) => {
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const messagesRef = ref(db, `chats/${chatId}`);
+        const messagesRef = ref(db, `chats/${chatId}/${userRole}/messages`);
+
         const unsubscribe = onValue(messagesRef, (snapshot) => {
             const data = snapshot.val();
             const loadedMessages = data ? Object.values(data) as Message[] : [];
@@ -48,7 +49,7 @@ const ChatWindow = ({chatId,userRole}:Props) => {
         //  Send rolePrompt to Gemini API
         const botReplyText = await generateReply(rolePrompt);
         const botMessage: Message = { sender: 'bot', text: botReplyText,timestamp: Date.now() };
-        const messagesRef = ref(db, `chats/${chatId}`);
+        const messagesRef = ref(db, `chats/${chatId}/${userRole}/messages`);
         push(messagesRef, userMessage);
         push(messagesRef, botMessage);
 

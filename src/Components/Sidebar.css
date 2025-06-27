@@ -1,5 +1,6 @@
 .sidebar {
     width: 260px;
+    overflow-y: auto;
     background-color: #f9f9f9;
     color: #333;
     padding: 20px;
@@ -7,6 +8,7 @@
     flex-direction: column;
     border-right: 1px solid #ddd;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+    height: 100vh;
 }
 
 .sidebar-header,

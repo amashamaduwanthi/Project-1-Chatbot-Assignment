@@ -70,6 +70,10 @@ const App = () => {
                     <li className={selectedChat === 'friend' ? 'active' : ''} onClick={() => setSelectedChat('friend')}>
                         Friend
                     </li>
+
+                    <li className={selectedChat === 'teacher' ? 'active' : ''} onClick={() => setSelectedChat('teacher')}>
+                        Teacher
+                    </li>
                 </ul>
             </aside>
 
