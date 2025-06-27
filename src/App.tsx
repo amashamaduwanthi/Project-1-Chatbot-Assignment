@@ -5,6 +5,9 @@ import Login from './Components/Signin.tsx'
 import './App.css';
 import { auth, db } from './Firebase';
 import { ref, get } from 'firebase/database';
+import { signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+
 
 const App = () => {
     const [userId, setUserId] = useState<string | null>(null);
@@ -12,6 +15,7 @@ const App = () => {
     const [userName, setUserName] = useState<string>('User');
     const [showSignup, setShowSignup] = useState(false);
     const [selectedChat, setSelectedChat] = useState('default');
+    const navigate = useNavigate();
 
     const handleUserLogin = async (uid: string, role?: string, name?: string) => {
         setUserId(uid);
@@ -30,6 +34,14 @@ const App = () => {
             console.error('Error fetching role:', error);
             setUserRole('guest');
         }
+    };
+
+    const handleLogout = async () => {
+        await signOut(auth);
+        setUserId(null);
+        setUserRole('guest');
+        setUserName('User');
+        navigate('/'); // or navigate('/signin') if routing defined
     };
 
     if (!userId) {
@@ -59,18 +71,31 @@ const App = () => {
     return (
         <div className="app-layout">
             <aside className="sidebar">
-                <h2 className="sidebar-header">Chats</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h2 className="sidebar-header">Chats</h2>
+                    <button onClick={handleLogout} style={{
+                        padding: '6px 12px',
+                        backgroundColor: '#e74c3c',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        cursor: 'pointer'
+                    }}>
+                        Logout
+                    </button>
+                </div>
+
                 <ul className="chat-list">
                     <li className={selectedChat === 'default' ? 'active' : ''} onClick={() => setSelectedChat('default')}>
                         Default
                     </li>
-                    <li className={selectedChat === 'counseling' ? 'active' : ''} onClick={() => setSelectedChat('counseling')}>
+                    <li className={selectedChat === 'counselor' ? 'active' : ''} onClick={() => setSelectedChat('counselor')}>
                         Counseling
                     </li>
                     <li className={selectedChat === 'friend' ? 'active' : ''} onClick={() => setSelectedChat('friend')}>
                         Friend
                     </li>
-
                     <li className={selectedChat === 'teacher' ? 'active' : ''} onClick={() => setSelectedChat('teacher')}>
                         Teacher
                     </li>

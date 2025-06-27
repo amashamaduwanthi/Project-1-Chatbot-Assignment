@@ -6,7 +6,7 @@ import './signup.css'
 const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("counselor");
+    const [role, setRole] = useState("default");
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,6 +45,7 @@ const Signup = () => {
                 <option value="counselor">Counselor</option>
                 <option value="teacher">Teacher</option>
                 <option value="friend">Friend</option>
+                <option value="default">Default</option>
             </select>
             <button type="submit">Sign Up</button>
         </form>
